@@ -1,12 +1,28 @@
 <ion-header>
   <ion-toolbar>
-      <ion-buttons slot="start">
-        <ion-back-button defaultHref=""></ion-back-button>
-      </ion-buttons>
-    <ion-title>Room</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref=""></ion-back-button>
+    </ion-buttons>
+    <ion-title>Room <ion-text *ngIf="room">{{room.id}}</ion-text></ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+  <ion-list *ngIf="room">
+    <ion-item>
+      <ion-label>Name: {{room.name}}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>Contact: {{room.contact}}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>Arrival Date: {{room.arrivalDateString}}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>Pay Deadline Date: {{room.paymentDeadlineString}}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>Status: {{room.status}}</ion-label>
+    </ion-item>
+  </ion-list>
 </ion-content>

@@ -66,4 +66,12 @@ export class RoomService {
     return this.roomList;
   }
 
+  getRoom(id: string | number): Room{
+    let idx = this.roomList.findIndex(room=>{
+      return room.id.toString() == id.toString();
+    })
+    if(idx >= 0) return this.roomList[idx];
+    else return null;
+  }
+
 }
