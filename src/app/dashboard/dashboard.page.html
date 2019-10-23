@@ -1,9 +1,27 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>dashboard</ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-button menu="m1"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Dashboard</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+  <ion-grid style="padding: 0;">
+    <ion-row *ngFor="let room of roomList" [routerLink]="['/', 'room', room.id]">
+      <ion-col size="3" class="vertical center" style="border: solid .5px black">
+        <ion-label>Room ID</ion-label>
+        <ion-avatar class="vertical center" style="background-color: orange;">
+          <ion-text>{{room.id}}</ion-text>
+        </ion-avatar>
+      </ion-col>
+      <ion-col size="9" class="vertical top left" style="border: solid .5px black">
+        <ion-text>Name: {{room.name}}</ion-text>
+        <ion-text>Pay Deadline: {{room.paymentDeadlineString}}</ion-text>
+        <ion-text style="color: orange;" *ngIf="room.due > 0">Payment Overdue: {{room.due}} days</ion-text>
+        <ion-text style="color: red;" *ngIf="false">Max. due date has been reached</ion-text>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

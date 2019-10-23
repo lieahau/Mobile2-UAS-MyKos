@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Room } from './../services/room.model';
+import { RoomService } from "./../services/room.service"
 
 @Component({
   selector: 'app-dashboard',
@@ -7,9 +9,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashboardPage implements OnInit {
 
-  constructor() { }
+  roomList :Room[];
+
+  constructor(private roomService: RoomService) { }
 
   ngOnInit() {
+  }
+
+  ionViewWillEnter(){
+    this.roomList = this.roomService.getRoomList();
   }
 
 }

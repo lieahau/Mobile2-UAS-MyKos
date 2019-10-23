@@ -1,9 +1,24 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>overview</ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-button menu="m1"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Overview</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+  <ion-grid style="padding: 0;">
+    <ion-row>
+      <ion-col size="6" *ngFor="let room of roomList" [routerLink]="['/', 'room', room.id]">
+        <ion-card class="vertical center">
+          <ion-label margin style="font-weight: bold;">Room ID</ion-label>
+          <ion-avatar class="vertical center" style="background-color: orange; height: 30vw;width: 30vw;">
+            <ion-text>{{room.id}}</ion-text>
+          </ion-avatar>
+          <ion-label margin style="font-weight: bold;">{{room.status}}</ion-label>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
