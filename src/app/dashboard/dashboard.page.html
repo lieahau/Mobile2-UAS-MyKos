@@ -4,12 +4,20 @@
       <ion-menu-button menu="m1"></ion-menu-button>
     </ion-buttons>
     <ion-title>Dashboard</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="search()">
+        <ion-icon name="search"></ion-icon>
+      </ion-button>
+      <ion-button (click)="sort()">
+        <ion-icon name="funnel"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <ion-grid style="padding: 0;">
-    <ion-row *ngFor="let room of roomList" [routerLink]="['/', 'room', room.id]">
+    <ion-row *ngFor="let room of modifiedRoomList" [routerLink]="['/', 'room', room.id]">
       <ion-col size="3" class="vertical center" style="border: solid .5px black">
         <ion-label>Room ID</ion-label>
         <ion-avatar class="vertical center" style="background-color: orange;">
