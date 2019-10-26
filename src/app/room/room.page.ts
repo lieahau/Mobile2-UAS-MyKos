@@ -79,10 +79,7 @@ export class RoomPage implements OnInit {
         name: 'date',
         placeholder: 'Input Date...',
         type: 'Date',
-        value: this.room.arrivalDate ?
-          this.room.arrivalDate.getFullYear()+"-"+
-          (this.room.arrivalDate.getMonth()  + 1 < 10 ? '0' + (this.room.arrivalDate.getMonth() + 1) : (this.room.arrivalDate.getMonth() + 1) )+"-"+
-          (this.room.arrivalDate.getDate() < 10 ? '0' + this.room.arrivalDate.getDate() : this.room.arrivalDate.getDate()) : null
+        value: this.nyeh(this.room.getArrivalDate())
       }
     ];
     let buttons = [
@@ -107,10 +104,7 @@ export class RoomPage implements OnInit {
         name: 'date',
         placeholder: 'Input Date...',
         type: 'Date',
-        value: this.room.paymentDeadline ?
-          this.room.paymentDeadline.getFullYear()+"-"+
-          (this.room.paymentDeadline.getMonth()  + 1 < 10 ? '0' + (this.room.paymentDeadline.getMonth() + 1) : (this.room.paymentDeadline.getMonth() + 1) )+"-"+
-          (this.room.paymentDeadline.getDate() < 10 ? '0' + this.room.paymentDeadline.getDate() : this.room.paymentDeadline.getDate()) : null
+        value: this.nyeh(this.room.getPaymentDeadline())
       }
     ];
     let buttons = [
@@ -140,5 +134,12 @@ export class RoomPage implements OnInit {
 
   getID(id: number){
     return this.roomService.convertID(id);
+  }
+
+  nyeh(date: Date): string{
+    return date ?
+      date.getFullYear()+"-"+
+      (date.getMonth()  + 1 < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1) )+"-"+
+      (date.getDate() < 10 ? '0' + date.getDate() : date.getDate()) : null
   }
 }
