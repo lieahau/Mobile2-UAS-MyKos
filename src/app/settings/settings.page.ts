@@ -20,9 +20,13 @@ export class SettingsPage implements OnInit {
   ) { }
 
   ngOnInit() {
+  }
+
+  ionViewWillEnter(){
     this.numberOfRooms = this.roomService.getNumberOfRooms();
     this.roomIdValue = this.roomService.getRoomIdValue();
     this.maxDueDate = this.roomService.getMaxDueDate();
+    console.log(this.maxDueDate);
   }
 
   async setNumberOfRooms() {

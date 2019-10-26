@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { Room } from './../services/room.model';
 import { RoomService } from "./../services/room.service"
 
@@ -11,12 +11,20 @@ export class OverviewPage implements OnInit {
 
   roomList :Room[] = [];
 
-  constructor(private roomService: RoomService) { }
+  constructor(private roomService: RoomService, private ngZone: NgZone) {
+    this.roomService.observeRoomList().subscribe(()=>{
+      this.ngZone.run(() => this.getData());
+    });
+  }
 
   ngOnInit() {
   }
 
   ionViewWillEnter(){
+    this.getData();
+  }
+
+  getData(){
     this.roomList = this.roomService.getRoomList();
   }
 

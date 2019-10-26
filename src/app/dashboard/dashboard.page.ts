@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { Room } from './../services/room.model';
 import { AlertController } from '@ionic/angular';
 
@@ -26,13 +26,22 @@ export class DashboardPage implements OnInit {
 
   constructor(
     private roomService: RoomService,
-    private alertController: AlertController
-  ) { }
+    private alertController: AlertController,
+    private ngZone: NgZone
+  ) { 
+    this.roomService.observeRoomList().subscribe(()=>{
+      this.ngZone.run(() => this.getData());
+    });
+  }
 
   ngOnInit() {
   }
 
   ionViewWillEnter(){
+    this.getData();
+  }
+
+  getData(){
     this.roomList = this.roomService.getRoomList();
     this.modifiedRoomList = this.roomList.map(value => value);
   }
@@ -101,9 +110,9 @@ export class DashboardPage implements OnInit {
             } else if (this.sortby === 'byDeadline') {
               this.modifiedRoomList = this.modifiedRoomList.sort(
                 (a: Room, b: Room) => {
-                  if (a.paymentDeadline < b.paymentDeadline) {
+                  if (a.getPaymentDeadline() < b.getPaymentDeadline()) {
                     return -1;
-                  } else if (a.paymentDeadline > b.paymentDeadline) {
+                  } else if (a.getPaymentDeadline() > b.getPaymentDeadline()) {
                     return 1;
                   } else {
                     return 0;
@@ -168,5 +177,9 @@ export class DashboardPage implements OnInit {
 
   getID(id: number){
     return this.roomService.convertID(id);
+  }
+
+  coba(){
+    return this.roomService.coba();
   }
 }

@@ -1,29 +1,61 @@
 import { Injectable } from '@angular/core';
 import { Room } from './room.model';
 
+import { AngularFireDatabase } from "@angular/fire/database"
+import { Observable, BehaviorSubject } from 'rxjs';
+
 @Injectable({
   providedIn: 'root'
 })
 export class RoomService {
 
   roomIdValue: 'numeric' | 'alphabetic' = 'numeric';
-  maxDueDate = 30;
+  maxDueDate = 0;
 
-  private roomList :Room[] = [
-    new Room(1, "Ryan", "68635", new Date(2019, 10 -1, 21), new Date(2019, 10 -1, 29)),
-    new Room(2, "Budi", "585458548", new Date(2019, 10 -1, 11), new Date(2019, 10 -1, 20)),
-    new Room(3, "---", "---", null, null),
-    new Room(4, "---", "---", null, null),
-    new Room(5, "---", "---", null, null),
-    new Room(6, "---", "---", null, null),
-  ];
+  userRef = "coba";
+  databaseRef: any;
 
-  constructor() { }
+  roomList :Room[] = [];
+  observableRoomList: BehaviorSubject<Room[]>;
+
+  constructor(private fireBaseDB: AngularFireDatabase) {
+    this.databaseRef = this.fireBaseDB.database.ref(this.userRef);
+    this.observableRoomList = new BehaviorSubject<Room[]>(this.roomList);
+    
+    this.databaseRef.child('maxDueDate').on('value', due=> {
+      if(due) this.maxDueDate = due.val();
+    });
+
+    this.databaseRef.child('rooms').on('value', snapshot => {
+      this.roomList = []
+      snapshot.forEach(child => {
+        let val = child.val();
+        this.roomList.push(new Room(
+          val.id, 
+          val.name, 
+          val.contact, 
+          val.arrivalDate ? new Date(val.arrivalDate.time) : null, 
+          val.paymentDeadline ? new Date(val.paymentDeadline.time) : null
+        ));
+      });
+      this.emittRoomList();
+    });
+  }
+
+  coba(){
+    this.databaseRef.child("rooms").set(this.roomList);
+  }
+
+  observeRoomList(): Observable<Room[]> {
+    return this.observableRoomList.asObservable();
+  }
+  emittRoomList(){
+    this.observableRoomList.next(null);
+  }
 
   getRoomList(): Room[] {
     return this.roomList;
   }
-
   getRoom(id: string | number): Room{
     let idx = this.roomList.findIndex(room=>{
       return room.id.toString() == id.toString();
@@ -31,15 +63,19 @@ export class RoomService {
     if(idx >= 0) return this.roomList[idx];
     else return null;
   }
-
   updateRoom(id: string | number, room: Room){
     let idx = this.roomList.findIndex(room=>{
       return room.id.toString() == id.toString();
     })
     if(idx >= 0 && this.roomList[idx].id == room.id) {
       this.roomList[idx] = room;
+      let query = this.databaseRef.child('rooms').orderByChild('id').equalTo(room.id);
+      query.once("child_added", (snapshot)=>{
+        snapshot.ref.update(room);
+      });
     }
   }
+
 
   getNumberOfRooms():number{ return this.roomList.length; }
   updateNumberOfRooms(num: number){
@@ -47,33 +83,14 @@ export class RoomService {
     else for(let i = this.roomList.length; i<num; i++){
       this.roomList.push(new Room(i+1,"---","---", null, null));
     }
+    this.databaseRef.child('rooms').set(this.roomList);
   }
+
 
   getRoomIdValue():'numeric' | 'alphabetic'{ return this.roomIdValue; }
   updateRoomIdValue(value: 'numeric' | 'alphabetic'){
     this.roomIdValue = value;
   }
-
-  getDue(id: number | String){
-    let idx = this.roomList.findIndex(room=>{
-      return room.id.toString() == id.toString();
-    })
-
-    if(idx >= 0){
-      if (this.roomList[idx].paymentDeadline) {
-          let days: number = this.roomList[idx].deadline();
-          if(days < 0) return days + this.maxDueDate;
-          else return null;
-      }
-      else return null;
-    }
-  }
-
-  getMaxDueDate():number{ return this.maxDueDate; }
-  updateMaxDueDate(due: number){
-    this.maxDueDate = due;
-  }
-
   convertID(num: number): number | string{
     if(this.roomIdValue == "alphabetic") {
       let t, str = "";
@@ -86,6 +103,28 @@ export class RoomService {
     }
     else if (this.roomIdValue == "numeric"){
       return num;
+    }
+  }
+
+
+  getMaxDueDate():number{ return this.maxDueDate; }
+  updateMaxDueDate(due: number){
+    this.maxDueDate = due;
+    this.databaseRef.update({maxDueDate: due});
+  }
+  getDue(id: number | String){
+    let idx = this.roomList.findIndex(room=>{
+      return room.id.toString() == id.toString();
+    })
+
+    if(idx >= 0){
+      let dead: number = this.roomList[idx].getDeadline();
+      if (dead) {
+          if(this.maxDueDate + dead < 0) return -1;
+          else if(dead < 0) {return dead*-1;}
+          else return null;
+      }
+      else return null;
     }
   }
 

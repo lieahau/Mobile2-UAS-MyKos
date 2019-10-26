@@ -25,13 +25,13 @@
       <ion-label>Contact: {{room.contact}}</ion-label>
     </ion-item>
     <ion-item (click)="inputArrivalDate()">
-      <ion-label>Arrival Date: {{room.arrivalDateString()}}</ion-label>
+      <ion-label>Arrival Date: {{room.getArrivalDateString()}}</ion-label>
     </ion-item>
     <ion-item (click)="inputPaymentDeadline()">
-      <ion-label>Pay Deadline Date: {{room.paymentDeadlineString()}}</ion-label>
+      <ion-label>Pay Deadline Date: {{room.getPaymentDeadlineString()}}</ion-label>
     </ion-item>
     <ion-item>
-      <ion-label>Status: {{room.status()}}</ion-label>
+      <ion-label>Status: {{room.getStatus()}}</ion-label>
     </ion-item>
   </ion-list>
 </ion-content>

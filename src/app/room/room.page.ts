@@ -93,7 +93,7 @@ export class RoomPage implements OnInit {
       {
         text: 'Ok',
         handler: (value) => {
-          this.room.arrivalDate = new Date(value.date);
+          this.room.setArrivalDate(new Date(value.date));
           this.roomService.updateRoom(this.room.id, this.room);
         }
       }
@@ -121,7 +121,7 @@ export class RoomPage implements OnInit {
       {
         text: 'Ok',
         handler: (value) => {
-          this.room.paymentDeadline = new Date(value.date);
+          this.room.setPaymentDeadline(new Date(value.date));
           this.roomService.updateRoom(this.room.id, this.room);
         }
       }

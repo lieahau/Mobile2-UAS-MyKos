@@ -2,6 +2,7 @@
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-menu-button menu="m1"></ion-menu-button>
+      <ion-button (click)="coba()">dbe</ion-button>
     </ion-buttons>
     <ion-title>Dashboard</ion-title>
     <ion-buttons slot="end">
@@ -26,7 +27,7 @@
       </ion-col>
       <ion-col size="9" class="vertical top left" style="border: solid .5px black">
         <ion-text>Name: {{room.name}}</ion-text>
-        <ion-text>Pay Deadline: {{room.paymentDeadlineString()}}</ion-text>
+        <ion-text>Pay Deadline: {{room.getPaymentDeadlineString()}}</ion-text>
         <ion-text style="color: orange;" *ngIf="getDue(room.id) && getDue(room.id) > 0">Payment Overdue: {{getDue(room.id)}} days</ion-text>
         <ion-text style="color: red;" *ngIf="getDue(room.id) && getDue(room.id) < 0">Max. due date has been reached</ion-text>
       </ion-col>
