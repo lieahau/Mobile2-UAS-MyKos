@@ -4,7 +4,7 @@ import { AlertController } from '@ionic/angular';
 
 import { Room } from './../services/room.model';
 import { RoomService } from "./../services/room.service"
-
+ 
 @Component({
   selector: 'app-room',
   templateUrl: './room.page.html',
@@ -14,7 +14,7 @@ export class RoomPage implements OnInit {
 
   room: Room;
 
-  constructor(public alertController: AlertController, public route: ActivatedRoute, public datePicker: DatePicker, private roomService: RoomService) { }
+  constructor(public alertController: AlertController, public route: ActivatedRoute, private roomService: RoomService) { }
 
   ngOnInit() {
     this.route.paramMap.subscribe(paramMap => {
