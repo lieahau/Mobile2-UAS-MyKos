@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 
-import { DatePicker } from '@ionic-native/date-picker/ngx';
-
 import { Room } from './../services/room.model';
 import { RoomService } from "./../services/room.service"
 
