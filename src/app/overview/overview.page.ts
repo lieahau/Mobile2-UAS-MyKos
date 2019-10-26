@@ -20,4 +20,8 @@ export class OverviewPage implements OnInit {
     this.roomList = this.roomService.getRoomList();
   }
 
+  getID(id: number){
+    return this.roomService.convertID(id);
+  }
+
 }

@@ -3,26 +3,35 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref=""></ion-back-button>
     </ion-buttons>
-    <ion-title>Room <ion-text *ngIf="room">{{room.id}}</ion-text></ion-title>
+    <ion-title>Room <ion-text *ngIf="room">{{getID(room.id)}}</ion-text></ion-title>
+    <ion-buttons slot="end">
+      <ion-button style="--ion-background-color: red;">Reset</ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <div class="vertical center">
+    <ion-label margin style="font-weight: bold;">Room ID</ion-label>
+    <ion-avatar class="vertical center" style="background-color: orange; height: 60vw;width: 60vw;">
+      <ion-text style="font-size: 5rem;">{{getID(room.id)}}</ion-text>
+    </ion-avatar>
+  </div>
   <ion-list *ngIf="room">
-    <ion-item>
+    <ion-item (click)="inputName()">
       <ion-label>Name: {{room.name}}</ion-label>
     </ion-item>
-    <ion-item>
+    <ion-item (click)="inputContact()">
       <ion-label>Contact: {{room.contact}}</ion-label>
     </ion-item>
-    <ion-item>
-      <ion-label>Arrival Date: {{room.arrivalDateString}}</ion-label>
+    <ion-item (click)="inputArrivalDate()">
+      <ion-label>Arrival Date: {{room.arrivalDateString()}}</ion-label>
+    </ion-item>
+    <ion-item (click)="inputPaymentDeadline()">
+      <ion-label>Pay Deadline Date: {{room.paymentDeadlineString()}}</ion-label>
     </ion-item>
     <ion-item>
-      <ion-label>Pay Deadline Date: {{room.paymentDeadlineString}}</ion-label>
-    </ion-item>
-    <ion-item>
-      <ion-label>Status: {{room.status}}</ion-label>
+      <ion-label>Status: {{room.status()}}</ion-label>
     </ion-item>
   </ion-list>
 </ion-content>

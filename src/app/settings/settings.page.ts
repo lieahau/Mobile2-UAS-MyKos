@@ -1,21 +1,28 @@
 import { Component, OnInit } from '@angular/core';
 import {AlertController} from '@ionic/angular';
 
+import { Room } from './../services/room.model';
+import { RoomService } from "./../services/room.service"
+
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.page.html',
   styleUrls: ['./settings.page.scss'],
 })
 export class SettingsPage implements OnInit {
-  numberOfRooms = 0;
-  roomIdValue: 'numeric' | 'alphabetic' = 'numeric';
-  maxDueDate = 30;
+  numberOfRooms: Number;
+  roomIdValue: 'numeric' | 'alphabetic';
+  maxDueDate: number;
 
   constructor(
-    private alertController: AlertController
+    private alertController: AlertController,
+    private roomService: RoomService
   ) { }
 
   ngOnInit() {
+    this.numberOfRooms = this.roomService.getNumberOfRooms();
+    this.roomIdValue = this.roomService.getRoomIdValue();
+    this.maxDueDate = this.roomService.getMaxDueDate();
   }
 
   async setNumberOfRooms() {
@@ -38,7 +45,8 @@ export class SettingsPage implements OnInit {
           text: 'OK',
           handler: (value) => {
             console.log(value);
-            this.numberOfRooms = Math.round(value.numberOfRooms);
+            this.numberOfRooms = Math.floor(value.numberOfRooms);
+            this.roomService.updateNumberOfRooms(Math.floor(value.numberOfRooms));
           }
         }
       ]
@@ -76,6 +84,7 @@ export class SettingsPage implements OnInit {
           handler: (value) => {
             console.log(value);
             this.roomIdValue = value;
+            this.roomService.updateRoomIdValue(value);
           }
         }
       ]
@@ -104,7 +113,8 @@ export class SettingsPage implements OnInit {
           text: 'OK',
           handler: (value) => {
             console.log(value);
-            this.maxDueDate = Math.round(value.maxDueDate);
+            this.maxDueDate = Math.floor(value.maxDueDate);
+            this.roomService.updateMaxDueDate(Math.floor(value.maxDueDate));
           }
         }
       ]

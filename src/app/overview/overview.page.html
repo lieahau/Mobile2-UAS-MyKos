@@ -14,9 +14,9 @@
         <ion-card class="vertical center">
           <ion-label margin style="font-weight: bold;">Room ID</ion-label>
           <ion-avatar class="vertical center" style="background-color: orange; height: 30vw;width: 30vw;">
-            <ion-text>{{room.id}}</ion-text>
+            <ion-text style="font-size: 2rem;">{{getID(room.id)}}</ion-text>
           </ion-avatar>
-          <ion-label margin style="font-weight: bold;">{{room.status}}</ion-label>
+          <ion-label margin style="font-weight: bold;">{{room.status()}}</ion-label>
         </ion-card>
       </ion-col>
     </ion-row>

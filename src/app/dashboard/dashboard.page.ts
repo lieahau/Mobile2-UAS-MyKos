@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Room } from './../services/room.model';
+import { AlertController } from '@ionic/angular';
+
 import { RoomService } from "./../services/room.service";
-import {AlertController} from '@ionic/angular';
 import * as Fuse from 'fuse.js';
 
 @Component({
@@ -161,4 +162,11 @@ export class DashboardPage implements OnInit {
     await alert.present();
   }
 
+  getDue(id: number){
+    return this.roomService.getDue(id);
+  }
+
+  getID(id: number){
+    return this.roomService.convertID(id);
+  }
 }
