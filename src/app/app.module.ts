@@ -11,16 +11,7 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
-
-var firebaseConfig = {
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-};
+import { firebaseConfig } from './env/firebase'
 
 @NgModule({
   declarations: [AppComponent],
