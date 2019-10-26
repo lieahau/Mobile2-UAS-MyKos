@@ -136,6 +136,10 @@ export class RoomPage implements OnInit {
     return this.roomService.convertID(id);
   }
 
+  resetRoom(id: number){
+    this.roomService.resetRoom(id);
+  }
+
   nyeh(date: Date): string{
     return date ?
       date.getFullYear()+"-"+

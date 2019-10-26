@@ -42,10 +42,6 @@ export class RoomService {
     });
   }
 
-  coba(){
-    this.databaseRef.child("rooms").set(this.roomList);
-  }
-
   observeRoomList(): Observable<Room[]> {
     return this.observableRoomList.asObservable();
   }
@@ -72,6 +68,18 @@ export class RoomService {
       let query = this.databaseRef.child('rooms').orderByChild('id').equalTo(room.id);
       query.once("child_added", (snapshot)=>{
         snapshot.ref.update(room);
+      });
+    }
+  }
+  resetRoom(id: string | number){
+    let idx = this.roomList.findIndex(room=>{
+      return room.id.toString() == id.toString();
+    })
+    if(idx >= 0) {
+      this.roomList[idx].reset();
+      let query = this.databaseRef.child('rooms').orderByChild('id').equalTo(id);
+      query.once("child_added", (snapshot)=>{
+        snapshot.ref.update(this.roomList[idx]);
       });
     }
   }

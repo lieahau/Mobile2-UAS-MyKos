@@ -179,7 +179,4 @@ export class DashboardPage implements OnInit {
     return this.roomService.convertID(id);
   }
 
-  coba(){
-    return this.roomService.coba();
-  }
 }
