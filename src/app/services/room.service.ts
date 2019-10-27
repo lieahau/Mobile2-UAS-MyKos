@@ -83,6 +83,11 @@ export class RoomService {
       });
     }
   }
+  resetRooms(ids: string[] | number[]) {
+    for (const id of ids) {
+      this.resetRoom(id);
+    }
+  }
 
 
   getNumberOfRooms():number{ return this.roomList.length; }

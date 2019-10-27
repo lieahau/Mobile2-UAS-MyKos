@@ -4,6 +4,7 @@ import { AlertController } from '@ionic/angular';
 
 import { RoomService } from "./../services/room.service";
 import * as Fuse from 'fuse.js';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -24,10 +25,18 @@ export class DashboardPage implements OnInit {
   // variable untuk menentukan terakhir kali search
   lastSearch = '';
 
+  // selectable
+  isSelected = false;
+  timeout = null;
+  interval = null;
+  timepassed = -1;
+  selectedIds: number[] = [];
+
   constructor(
     private roomService: RoomService,
     private alertController: AlertController,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private router: Router
   ) { 
     this.roomService.observeRoomList().subscribe(()=>{
       this.ngZone.run(() => this.getData());
@@ -179,4 +188,75 @@ export class DashboardPage implements OnInit {
     return this.roomService.convertID(id);
   }
 
+  // selectable handler
+  // trigger on long press
+  isSelectableSelected(id: number): boolean {
+    return this.selectedIds.includes(id);
+  }
+
+  startSelectable(id: number) {
+    console.log('Start Selectable');
+    this.timeout = setTimeout(() => {
+      console.log('Start Selectable finish');
+      this.isSelected = true;
+
+      clearInterval(this.interval);
+      this.interval = null;
+
+      this.timeout = null;
+      this.timepassed = -1;
+
+      this.clickSelectable(id);
+    }, 2000);
+
+    this.timepassed = 0;
+    this.interval = setInterval(() => this.timepassed += 100, 100);
+  }
+
+  // toggle isSelectable
+  // only work if isSelected is true
+  clickSelectable(id: number) {
+    console.log(`Toggle selectable ${id}`);
+    if (this.isSelectableSelected(id)) {
+      this.selectedIds = this.selectedIds.filter(value => value !== id);
+    } else {
+      this.selectedIds.push(id);
+    }
+  }
+
+  // cancel selectable
+  // also handle navigation if not long press
+  cancelSelectable(id?: number) {
+    let navigate = false;
+
+    console.log('Cancel Selectable');
+    if (this.timeout) {
+      clearInterval(this.interval);
+      this.interval = null;
+      clearTimeout(this.timeout);
+      this.timeout = null;
+    }
+
+    console.log('Reset selectable state');
+    if (id && this.timepassed < 2000) {
+      navigate = true;
+    }
+    this.timepassed = -1;
+    this.isSelected = false;
+    this.selectedIds = [];
+
+    if (navigate) {
+      console.log(`navigate to room ${id}`);
+      this.router.navigate(['/', 'room', id]);
+    }
+  }
+
+  // reset all selected dashboard item
+  resetSelectable() {
+    if (this.selectedIds.length > 0) {
+      console.log('Reset Selectable Room');
+      this.roomService.resetRooms(this.selectedIds);
+    }
+    this.cancelSelectable();
+  }
 }

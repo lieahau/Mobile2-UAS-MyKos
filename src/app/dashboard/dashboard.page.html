@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar *ngIf="!isSelected">
     <ion-buttons slot="start">
       <ion-menu-button menu="m1"></ion-menu-button>
     </ion-buttons>
@@ -13,11 +13,50 @@
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
+
+  <ion-toolbar *ngIf="isSelected" color="danger">
+    <ion-buttons slot="start">
+      <ion-button (click)="cancelSelectable()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{selectedIds.length}} items selected</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="resetSelectable()">
+        Reset
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-grid style="padding: 0;">
-    <ion-row *ngFor="let room of modifiedRoomList" [routerLink]="['/', 'room', room.id]">
+  <ion-grid style="padding: 0;" *ngIf="!isSelected">
+    <ion-row 
+      *ngFor="let room of modifiedRoomList" 
+      (mousedown)="startSelectable(room.id)"
+      (mouseup)="cancelSelectable(room.id)"
+    >
+      <ion-col size="3" class="vertical center" style="border: solid .5px black">
+        <ion-label>Room ID</ion-label>
+        <ion-avatar class="vertical center" style="background-color: orange;">
+          <ion-text>{{getID(room.id)}}</ion-text>
+        </ion-avatar>
+      </ion-col>
+      <ion-col size="9" class="vertical top left" style="border: solid .5px black">
+        <ion-text>Name: {{room.name}}</ion-text>
+        <ion-text>Pay Deadline: {{room.getPaymentDeadlineString()}}</ion-text>
+        <ion-text style="color: orange;" *ngIf="getDue(room.id) && getDue(room.id) > 0">Payment Overdue: {{getDue(room.id)}} days</ion-text>
+        <ion-text style="color: red;" *ngIf="getDue(room.id) && getDue(room.id) < 0">Max. due date has been reached</ion-text>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid style="padding: 0;" *ngIf="isSelected">
+    <ion-row 
+      *ngFor="let room of modifiedRoomList" 
+      (click)="clickSelectable(room.id)"
+      [ngClass]="{'selected' : isSelectableSelected(room.id)}"
+    >
       <ion-col size="3" class="vertical center" style="border: solid .5px black">
         <ion-label>Room ID</ion-label>
         <ion-avatar class="vertical center" style="background-color: orange;">
