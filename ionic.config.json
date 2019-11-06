@@ -1,5 +1,7 @@
 {
   "name": "Mobile2-UAS-MyKos",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }

@@ -12,15 +12,17 @@ export class RoomService {
   roomIdValue: 'numeric' | 'alphabetic' = 'numeric';
   maxDueDate = 0;
 
-  userRef = "coba";
   databaseRef: any;
 
   roomList :Room[] = [];
   observableRoomList: BehaviorSubject<Room[]>;
 
-  constructor(private fireBaseDB: AngularFireDatabase) {
-    this.databaseRef = this.fireBaseDB.database.ref(this.userRef);
+  constructor(private firebaseDB: AngularFireDatabase) {
     this.observableRoomList = new BehaviorSubject<Room[]>(this.roomList);
+  }
+
+  connectfirebaseDB(uid: string){
+    this.databaseRef = this.firebaseDB.database.ref(uid);
     
     this.databaseRef.child('maxDueDate').on('value', due=> {
       if(due) this.maxDueDate = due.val();
@@ -40,6 +42,11 @@ export class RoomService {
       });
       this.emittRoomList();
     });
+  }
+  disconnectfirebaseDB(){
+    this.databaseRef.child('maxDueDate').off();
+    this.databaseRef.child('rooms').off();
+    this.databaseRef = null;
   }
 
   observeRoomList(): Observable<Room[]> {
