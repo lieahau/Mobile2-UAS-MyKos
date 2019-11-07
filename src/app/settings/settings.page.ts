@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {AlertController} from '@ionic/angular';
 
-import { Room } from './../services/room.model';
 import { RoomService } from "./../services/room.service"
 
 @Component({
@@ -10,12 +8,11 @@ import { RoomService } from "./../services/room.service"
   styleUrls: ['./settings.page.scss'],
 })
 export class SettingsPage implements OnInit {
-  numberOfRooms: Number;
+  numberOfRooms: number;
   roomIdValue: 'numeric' | 'alphabetic';
   maxDueDate: number;
 
   constructor(
-    private alertController: AlertController,
     private roomService: RoomService
   ) { }
 
@@ -29,101 +26,29 @@ export class SettingsPage implements OnInit {
     console.log(this.maxDueDate);
   }
 
-  async setNumberOfRooms() {
-    const alert = await this.alertController.create({
-      header: 'Number of rooms',
-      inputs: [
-        {
-          name: 'numberOfRooms',
-          placeholder: 'How many room?',
-          type: 'number',
-          value: this.numberOfRooms
-        }
-      ],
-      buttons: [
-        {
-          role: 'cancel',
-          text: 'Cancel'
-        },
-        {
-          text: 'OK',
-          handler: (value) => {
-            console.log(value);
-            this.numberOfRooms = Math.floor(value.numberOfRooms);
-            this.roomService.updateNumberOfRooms(Math.floor(value.numberOfRooms));
-          }
-        }
-      ]
-    });
-
-    await alert.present();
+  // input handler
+  setNumberOfRooms($event) {
+    this.numberOfRooms = Math.floor($event.target.value);
+    console.log(`Set number of rooms ${this.numberOfRooms}`);
   }
 
-  async setRoomIdValue() {
-    const alert = await this.alertController.create({
-      header: 'Room ID value',
-      inputs: [
-        {
-          name: 'numeric',
-          type: 'radio',
-          label: 'Numeric',
-          checked: this.roomIdValue === 'numeric',
-          value: 'numeric'
-        },
-        {
-          name: 'alphabetic',
-          type: 'radio',
-          label: 'Alphabetic',
-          checked: this.roomIdValue === 'alphabetic',
-          value: 'alphabetic'
-        }
-      ],
-      buttons: [
-        {
-          role: 'cancel',
-          text: 'Cancel'
-        },
-        {
-          text: 'OK',
-          handler: (value) => {
-            console.log(value);
-            this.roomIdValue = value;
-            this.roomService.updateRoomIdValue(value);
-          }
-        }
-      ]
-    });
-
-    await alert.present();
+  submitNumberOfRooms() {
+    this.roomService.updateNumberOfRooms(this.numberOfRooms);
   }
 
-  async setMaxDueDate() {
-    const alert = await this.alertController.create({
-      header: 'Maximal due date',
-      inputs: [
-        {
-          name: 'maxDueDate',
-          placeholder: 'How many day?',
-          type: 'number',
-          value: this.maxDueDate
-        }
-      ],
-      buttons: [
-        {
-          role: 'cancel',
-          text: 'Cancel'
-        },
-        {
-          text: 'OK',
-          handler: (value) => {
-            console.log(value);
-            this.maxDueDate = Math.floor(value.maxDueDate);
-            this.roomService.updateMaxDueDate(Math.floor(value.maxDueDate));
-          }
-        }
-      ]
-    });
+  setRoomIdValue($event) {
+    this.roomIdValue = $event.target.value;
+    console.log(`Set room id value ${this.roomIdValue}`);
 
-    await alert.present();
+    this.roomService.updateRoomIdValue(this.roomIdValue);
+  }
+
+  setMaxDueDate($event) {
+    this.maxDueDate = Math.floor($event.target.value);
+    console.log(`Set max due date ${this.maxDueDate}`);
+  }
+
+  submitMaxDueDate() {
+    this.roomService.updateMaxDueDate(this.maxDueDate);
   }
 }
