@@ -247,7 +247,7 @@ export class DashboardPage implements OnInit {
 
     if (navigate) {
       console.log(`navigate to room ${id}`);
-      this.router.navigate(['/', 'room', id]);
+      this.router.navigate(['/', 'home', 'room', id]);
     }
   }
 

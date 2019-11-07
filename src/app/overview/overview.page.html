@@ -1,8 +1,5 @@
 <ion-header>
   <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button menu="m1"></ion-menu-button>
-    </ion-buttons>
     <ion-title>Overview</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -10,7 +7,7 @@
 <ion-content>
   <ion-grid style="padding: 0;">
     <ion-row>
-      <ion-col size="6" *ngFor="let room of roomList" [routerLink]="['/', 'room', room.id]">
+      <ion-col size="6" *ngFor="let room of roomList" [routerLink]="['/', 'home', 'room', room.id]" routerDirection="forward">
         <ion-card class="vertical center">
           <ion-label margin style="font-weight: bold;">Room ID</ion-label>
           <ion-avatar class="vertical center" style="background-color: orange; height: 30vw;width: 30vw;">

@@ -16,7 +16,7 @@ export class StartPage implements OnInit {
   }
 
   async googleSignIn(){
-    if(await this.authService.googleSignIn()) this.router.navigateByUrl('/dashboard');
+    if(await this.authService.googleSignIn()) this.router.navigateByUrl('/home');
   }
 
 }
