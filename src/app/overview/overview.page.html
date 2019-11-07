@@ -9,11 +9,11 @@
     <ion-row>
       <ion-col size="6" *ngFor="let room of roomList" [routerLink]="['/', 'home', 'room', room.id]" routerDirection="forward">
         <ion-card class="vertical center">
-          <ion-label margin style="font-weight: bold;">Room ID</ion-label>
+          <ion-label class="ion-margin" style="font-weight: bold;">Room ID</ion-label>
           <ion-avatar class="vertical center" style="background-color: orange; height: 30vw;width: 30vw;">
             <ion-text style="font-size: 2rem;">{{getID(room.id)}}</ion-text>
           </ion-avatar>
-          <ion-label margin style="font-weight: bold;">{{room.getStatus()}}</ion-label>
+          <ion-label class="ion-margin" style="font-weight: bold;">{{room.getStatus()}}</ion-label>
         </ion-card>
       </ion-col>
     </ion-row>
