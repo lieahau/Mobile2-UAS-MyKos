@@ -21,5 +21,9 @@
 }
 
 .selected {
-    background-color: aqua;
+    --background: indianred;
+}
+
+.selected > ion-item {
+    --background: indianred;
 }
