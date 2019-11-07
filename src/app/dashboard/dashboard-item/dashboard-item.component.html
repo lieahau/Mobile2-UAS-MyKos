@@ -1,0 +1,13 @@
+<ion-card [ngClass]="{'selected' : isSelected}">
+  <ion-item>
+    <ion-avatar slot="start" class="vertical center" style="background-color: orange;">
+      <ion-text>{{id}}</ion-text>
+    </ion-avatar>
+    <ion-label>
+      <h1>{{name}}</h1>
+      <h2>Pay Deadline: {{deadline}}</h2>
+      <ion-text style="color: orange;" *ngIf="due && due > 0">Payment Overdue: {{due}} days</ion-text>
+      <ion-text style="color: red;" *ngIf="due && due < 0">Max. due date has been reached</ion-text>
+    </ion-label>
+  </ion-item>
+</ion-card>
