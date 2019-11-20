@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { NavController } from '@ionic/angular';
 
-import { RoomService } from "./../services/room.service"
+import { AuthService } from './../services/auth.service';
+import { RoomService } from "./../services/room.service";
 
 @Component({
   selector: 'app-settings',
@@ -13,6 +15,8 @@ export class SettingsPage implements OnInit {
   maxDueDate: number;
 
   constructor(
+    public navCtrl: NavController,
+    private authService: AuthService,  
     private roomService: RoomService
   ) { }
 
@@ -50,5 +54,10 @@ export class SettingsPage implements OnInit {
 
   submitMaxDueDate() {
     this.roomService.updateMaxDueDate(this.maxDueDate);
+  }
+
+  signOut(){
+    this.authService.authSignOut();
+    this.navCtrl.navigateBack('/start');
   }
 }
