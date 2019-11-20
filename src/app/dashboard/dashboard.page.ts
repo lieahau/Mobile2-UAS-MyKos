@@ -164,7 +164,7 @@ export class DashboardPage implements OnInit {
             } else {
               // search
               const fuse = new Fuse(
-                this.modifiedRoomList,
+                this.roomList,
                 {
                   keys: ['name']
                 }
